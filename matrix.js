@@ -6,16 +6,24 @@ function Matrix(rows, cols, values) {
         this.values = values;
     } else {
         this.values = [];
-        for (var j=0; i< this.cols; j++) {
+        for (var j=0; j< this.cols; j++) {
             for (var i=0; i< this.rows; i++) {
-                this.values[rows*j + i] = 0;
+                this.values.push(Math.floor(Math.random() * 10));
             } 
         }
     }
 }
 
 
-Matrix.prototype.scalarMult = function(scalar) {
+Matrix.prototype.addScalar = function(scalar) {
+    var output = new Matrix(this.rows,this.cols)
+    for (var i=0; i < this.values.length; i++) {
+        output.values[i] = this.values[i] + scalar;
+    }
+    return output;
+}
+
+Matrix.prototype.multScalar = function(scalar) {
     var output = new Matrix(this.rows,this.cols)
     for (var i=0; i < this.values.length; i++) {
         output.values[i] = this.values[i] * scalar;
