@@ -14,6 +14,23 @@ function Matrix(rows, cols, values) {
     }
 }
 
+Matrix.prototype.add = function(val) {
+    if (val instanceof Matrix) {
+        return this.addMatrix(val);
+    } else {
+        return this.addScalar(val);
+    }
+}
+
+Matrix.prototype.mult = function(val) {
+    if (val instanceof Matrix) {
+        return this.multMatrix(val);
+    }else {
+        return this.multScalar(val);
+    }
+}
+
+
 
 Matrix.prototype.addScalar = function(scalar) {
     var output = new Matrix(this.rows,this.cols)
