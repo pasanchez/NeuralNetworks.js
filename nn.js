@@ -1,53 +1,32 @@
 // NN fullyConnected 3 layers.
 
-function NeuralNetwork(inputs, hidden, outputs) {
+function NeuralNetwork(inputs, hidden, outputs, init) {
    this.input_nodes = inputs;
    this.output_nodes = outputs;
    this.hidden_nodes = hidden;
-    
-   this.w1 = [];
-   this.w2 = [];
-
-   for (var i=0 ; i < this.hidden_nodes; i++) { //row
-    this.w1[i] = [];
-    for (var j=0; j < this.input_nodes; j++) {
-        this.w1[i][j] = 1;
-    }
-   }
-
-   for (var i=0 ; i < this.output_nodes; i++) { //row
-    this.w2[i] = [];
-    for (var j=0; j < this.hidden_nodes; j++) {
-        this.w2[i][j] = 1;
-    }
+   this.w1 = new Matrix(hidden, inputs);
+   this.w2 = new Matrix(outputs, hidden);
+   if (init) {
+       this.w1.values = [];
+       this.w2.values = [];
+       for (var i=0;i<hidden*inputs;i++) {
+            this.w1.values.push(init)
+        } 
+       for (var i=0;i<hidden*outputs;i++) {
+            this.w2.values.push(init)
+        } 
    }
 }
 
 
 NeuralNetwork.prototype.feedForward = function(inputs) {
 
-    if (inputs.length != this.w1[0].length) {
-        console.log("Wrong input size");
-        return;
+    if(!(inputs instanceof Matrix)) {
+        inputs = new Matrix(this.input_nodes,1, inputs)
     }
     //first layer: w1*X = hidden
-    var hidden = vmMult(this.w1, inputs);
+    var hidden = this.w1.mult(inputs);
     //second layer: w2*hidden = output
-    var outputs = vmMult(this.w2, hidden)
-    return outputs;
-}
-
-
-function vmMult(m, vector) {
-    // m indexed by rows
-    // v represents a column vector
-    var outputs = []
-    for (var i=0;i<m.length;i++){
-        var sum = 0;
-        for (var j=0; j < vector.length; j++) {
-            sum += vector[j] * m[i][j];
-        }
-        outputs.push(sum);
-    }
-    return outputs;
+    var outputs = this.w2.mult(hidden);
+return outputs;
 }

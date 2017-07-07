@@ -6,10 +6,8 @@ function Matrix(rows, cols, values) {
         this.values = values;
     } else {
         this.values = [];
-        for (var j=0; j< this.cols; j++) {
-            for (var i=0; i< this.rows; i++) {
-                this.values.push(Math.floor(Math.random() * 10));
-            } 
+        for (var i=0; i < this.rows * this.cols; i++) {
+            this.values.push(Math.floor(Math.random()*10));
         }
     }
 }
